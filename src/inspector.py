@@ -1,5 +1,5 @@
 from lark import Visitor, Tree
-from rules import Rule
+from src.rules import Rule
 
 
 class Inspector(Visitor):

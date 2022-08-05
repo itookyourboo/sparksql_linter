@@ -7,7 +7,7 @@ class GrammarLoader:
     """
     Класс-загрузчик SQL грамматики
     """
-    def __init__(self, filename: str = 'sql.bnf'):
+    def __init__(self, filename: str = 'grammar/sql.bnf'):
         """
         :param filename: Файл с грамматикой
         """

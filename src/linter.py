@@ -1,8 +1,8 @@
 from lark import Lark, Tree
 
-from grammar_loader import GrammarLoader
-from inspector import Inspector
-from rules import RuleFormatter
+from src.grammar.grammar_loader import GrammarLoader
+from src.inspector import Inspector
+from src.rules import RuleFormatter
 
 
 class SqlLinter:

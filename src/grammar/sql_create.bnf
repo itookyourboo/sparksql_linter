@@ -1,0 +1,10 @@
+create: "CREATE" object name "(" fields ")"
+object: "TABLE"
+space: /\s*/
+name: alphanum+
+fields: field+
+alphanum: /\w/
+field: name
+
+%import common.WS
+%ignore WS
