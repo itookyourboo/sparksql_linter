@@ -9,4 +9,5 @@ class TableNameShouldBeInSnakeCase(Rule):
 
     def handle_tree(self, tree: Tree) -> bool:
         table_name: str = tree.children[0].children[0].value
+        self.raised_by = table_name
         return table_name.islower()

@@ -9,7 +9,7 @@ def main():
     inspector: Inspector = Inspector()
     inspector.add_rules(L_RULES)
 
-    sql: str = 'select digimon as "Digimon Name" from digimonn_mon_list'
+    sql: str = 'select digimon as "Digimon Name" from dIgimonn_mon_list'
     lint: SqlLinter = SqlLinter(sql, inspector)
     exit_code: int = lint()
     sys.exit(exit_code)
