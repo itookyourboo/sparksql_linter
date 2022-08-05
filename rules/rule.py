@@ -1,3 +1,5 @@
+from typing import Optional
+
 from lark import Tree
 
 
@@ -8,6 +10,7 @@ class Rule:
     name: str
     message: str
     trigger: str
+    raised_by: Optional[str] = None
 
     def handle_tree(self, tree: Tree) -> bool:
         """
@@ -22,6 +25,3 @@ class Rule:
 
     def __eq__(self, other):
         return self.name == other.name
-
-    def __str__(self):
-        return f'{self.name}: {self.message}'
