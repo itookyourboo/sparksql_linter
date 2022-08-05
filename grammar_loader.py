@@ -1,17 +1,24 @@
+from typing import Optional
+
 from lark import Lark
 
 
-def _get_grammar() -> str:
-    with open('sql.bnf') as sql_bnf_file:
-        return sql_bnf_file.read()
+class GrammarLoader:
+    """
+    Класс-загрузчик SQL грамматики
+    """
+    def __init__(self, filename: str = 'sql.bnf'):
+        """
+        :param filename: Файл с грамматикой
+        """
+        self.filename: str = filename
+        self._parser: Optional[Lark] = None
 
-
-__parser = None
-
-
-def get_parser() -> Lark:
-    global __parser
-    if not __parser:
-        grammar: str = _get_grammar()
-        __parser: Lark = Lark(grammar)
-    return __parser
+    def get_parser(self) -> Lark:
+        """
+        :return: парсер, объект типа Lark
+        """
+        if not self._parser:
+            with open(self.filename) as sql_bnf_file:
+                self._parser = Lark(sql_bnf_file.read())
+        return self._parser
