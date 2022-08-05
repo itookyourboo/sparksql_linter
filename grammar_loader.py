@@ -2,7 +2,7 @@ from lark import Lark
 
 
 def _get_grammar() -> str:
-    with open('sql.ebnf') as sql_bnf_file:
+    with open('sql.bnf') as sql_bnf_file:
         return sql_bnf_file.read()
 
 
