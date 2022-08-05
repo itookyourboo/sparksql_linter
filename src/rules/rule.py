@@ -1,3 +1,4 @@
+import abc
 from typing import Optional
 
 from lark import Tree
@@ -12,6 +13,7 @@ class Rule:
     trigger: str
     raised_by: Optional[str] = None
 
+    @abc.abstractmethod
     def handle_tree(self, tree: Tree) -> bool:
         """
         Валидирует элемент синтаксического дерева
