@@ -1,7 +1,6 @@
 import sys
-from src import main
-from src.dataclasses.file_metadata import FileMetadata
-from main import lint_files
+from src.useless.file_metadata import FileMetadata
+from src.useless.main import lint_files
 
 def read_files(*files: str):
     metadata_list = []
