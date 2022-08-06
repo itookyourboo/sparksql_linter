@@ -1,5 +1,3 @@
-from .S001 import KeyWordIsUpperCase
-
-S_rules = [
-    KeyWordIsUpperCase()
-]
+from . import (
+    S001,
+)
