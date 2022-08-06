@@ -1,2 +1,4 @@
-lark~=1.1.2
 sqlparse~=0.4.2
+inflection~=0.5.1
+dataclasses~=0.6
+termcolor~=1.1.0

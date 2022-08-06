@@ -13,7 +13,7 @@ def shift_position(position: tp.Tuple[int, int],
     if isinstance(token, (sql.Parenthesis, sql.IdentifierList)):
         return row, col
     if token.ttype is sqlparse.tokens.Newline:
-        print(row, col)
+        # print(row, col)
         row += 1
         col = 1
         return row, col
@@ -27,10 +27,11 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
     for query_rule in query_rules:
         if not query_rule.is_suitable(query):
             continue
-        if not query_rule.is_correct(query):
+        is_correct, correction = query_rule.is_correct(query)
+        if not is_correct:
             message = LintMessage(rule=query_rule, line=position[0],
                                   pos=position[1], context=query.value,
-                                  file=source)
+                                  file=source, resolve=correction)
             messages.append(message)
 
     tokens: sql.TokenList = query.tokens
@@ -38,14 +39,15 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
         for token_rule in token_rules:
             if not token_rule.is_suitable(token):
                 continue
-            if not token_rule.is_correct(token):
-                message = LintMessage(rule=token_rule,
-                                      line=position[0], pos=position[1],
-                                      context=token.value, file=source)
+            is_correct, correction = token_rule.is_correct(token)
+            if not is_correct:
+                message = LintMessage(rule=token_rule, line=position[0],
+                                      pos=position[1], context=token.value,
+                                      file=source, resolve=correction)
                 messages.append(message)
-        print(token.__repr__())
+        # print(token.__repr__())
         if isinstance(token, (sqlparse.sql.Parenthesis, sqlparse.sql.IdentifierList)):
-            new_messages, position = visit_query(token, position=position)
+            new_messages, position = visit_query(token, position=position, source=source)
             messages.extend(new_messages)
         position = shift_position(position, token)
     # print(messages)

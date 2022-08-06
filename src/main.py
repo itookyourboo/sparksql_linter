@@ -13,8 +13,7 @@ if __name__ == '__main__':
         path = Path(filename)
         to_run = [path] if path.is_file() else path.glob('**/*')
         for p in to_run:
-            print(p.name)
             sql = p.read_text()
-            exit_code |= run(sql)
+            exit_code |= run(sql, source=p.name)
 
     sys.exit(exit_code)

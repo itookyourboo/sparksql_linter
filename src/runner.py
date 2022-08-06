@@ -22,5 +22,5 @@ def run(sql, source="inline") -> bool:
 
 
 if __name__ == '__main__':
-    raw = "select * from (select * from aboba); select * from aboba"
+    raw = "select * from (select * from AbobaTable); select FieldName from aboba"
     run(raw)
