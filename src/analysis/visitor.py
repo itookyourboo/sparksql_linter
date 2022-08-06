@@ -12,7 +12,8 @@ def shift_position(position: tp.Tuple[int, int],
     row, col = position
     if isinstance(token, sql.Parenthesis):
         return row, col
-    if token == sqlparse.tokens.Newline:
+    print(token.ttype)
+    if token.ttype == sqlparse.tokens.Newline:
         row += 1
         col = 0
         return row, col
@@ -40,7 +41,7 @@ tp.Tuple[tp.List[LintMessage], tp.Tuple[int]]:
                                       line=position[0], pos=position[1],
                                       context=token.value)
                 messages.append(message)
-        #print(token.__repr__())
+        print(token.__repr__())
         if isinstance(token, sqlparse.sql.Parenthesis):
             new_messages, position = visit_query(token, position=position)
             messages.extend(new_messages)

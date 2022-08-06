@@ -14,5 +14,5 @@ def main(sql):
 
 
 if __name__ == '__main__':
-    query = "select * from (select * from aboba); select * from aboba"
+    query = "select * from (select * from aboba); \n select * from aboba"
     main(query)
