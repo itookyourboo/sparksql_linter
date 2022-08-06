@@ -1,0 +1,11 @@
+SELECT ;
+
+SELECT FROM;
+
+SELECT a FROM;
+
+SELECT FROM b;
+
+SELECT * FROM ;
+
+SELECT field FROM `table`;
