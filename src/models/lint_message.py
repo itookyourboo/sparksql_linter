@@ -1,6 +1,7 @@
 import dataclasses
 from src.rules.abstract_rules import Rule
 
+
 @dataclasses.dataclass
 class LintMessage:
     rule_num: str
@@ -24,4 +25,6 @@ class LintMessage:
     context: str
 
     def __str__(self):
-        return f"line: {self.line}, col: {self.pos} - {self.rule} ({self.context})"
+        return (
+            f'{self.line}:{self.pos:<4}| {self.rule.category}{self.rule.num:03}: {self.rule.text} [{self.context}]'
+        )
