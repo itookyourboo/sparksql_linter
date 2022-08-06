@@ -1,5 +1,6 @@
 import dataclasses
 from rules.model import Rule
+from termcolor import colored
 
 
 @dataclasses.dataclass
@@ -18,9 +19,17 @@ class LintMessage:
     pos: int
     context: str
     file: str
+    resolve: str
 
     def __str__(self):
-        return (
-            f'{self.file}\n{self.line}:{self.pos:<4}| {self.rule.category}'
-            f'{self.rule.num:03}: {self.rule.text} [{self.context.strip()}]'
-        )
+        file_info = f'{self.file}:{self.line}:{self.pos}'
+        base_str = f'{file_info:<25}| {self.rule.category}{self.rule.num:03}: ' \
+                   f'{self.rule.text} [{colored(self.context.strip(), "blue")}]'
+        if self.resolve:
+            x_from, x_to = self.resolve
+            hint: str = f'Hint: {x_from} --> {x_to}'
+            return (
+                f'{base_str}\n'
+                f'{colored(hint, "yellow")}'
+            )
+        return base_str
