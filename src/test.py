@@ -11,7 +11,7 @@ def f_test_all():
     for file in files:
         print(file)
         line = pathlib.Path(file).read_text()
-        run(line)
+        run(line, source=file)
 
 
 if __name__ == '__main__':

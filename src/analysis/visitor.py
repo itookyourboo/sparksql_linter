@@ -10,17 +10,18 @@ from rules import query_rules
 def shift_position(position: tp.Tuple[int, int],
                    token: sql.Token) -> tp.Tuple[int, int]:
     row, col = position
-    if isinstance(token, sql.Parenthesis):
+    if isinstance(token, (sql.Parenthesis, sql.IdentifierList)):
         return row, col
     if token.ttype is sqlparse.tokens.Newline:
+        print(row, col)
         row += 1
-        col = 0
+        col = 1
         return row, col
     col += len(token.value)
     return row, col
 
 
-def visit_query(query: sql.Statement | sql.Parenthesis, position=(0, 0)) -> \
+def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source="inline") -> \
         tp.Tuple[tp.List[LintMessage], tp.Tuple[int]]:
     messages = []
     for query_rule in query_rules:
@@ -28,7 +29,8 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(0, 0)) -> \
             continue
         if not query_rule.is_correct(query):
             message = LintMessage(rule=query_rule, line=position[0],
-                                  pos=position[1], context=query.value)
+                                  pos=position[1], context=query.value,
+                                  file=source)
             messages.append(message)
 
     tokens: sql.TokenList = query.tokens
@@ -39,10 +41,10 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(0, 0)) -> \
             if not token_rule.is_correct(token):
                 message = LintMessage(rule=token_rule,
                                       line=position[0], pos=position[1],
-                                      context=token.value)
+                                      context=token.value, file=source)
                 messages.append(message)
-        # print(token.__repr__())
-        if isinstance(token, sqlparse.sql.Parenthesis):
+        print(token.__repr__())
+        if isinstance(token, (sqlparse.sql.Parenthesis, sqlparse.sql.IdentifierList)):
             new_messages, position = visit_query(token, position=position)
             messages.extend(new_messages)
         position = shift_position(position, token)
