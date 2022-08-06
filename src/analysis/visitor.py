@@ -6,9 +6,9 @@ from models.lint_message import LintMessage
 from rules import token_rules
 from rules import query_rules
 from rules import data_rules
-from rules.D_rules.D001 import TableDoesNotExists
 from analysis.data_parser import is_ddl, parse_table, filter_not_whitespace
 from models.table import Table
+from rules.D_rules.D001 import TableDoesNotExists
 
 
 def shift_position(position: tp.Tuple[int, int],
@@ -43,14 +43,14 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
             messages.append(message)
 
     # обработка правил данных
-    for data_rule in data_rules:
+    for data_rule in [TableDoesNotExists()]:
         data_rule = data_rule.__class__(tables)
         if not data_rule.is_suitable(query):
             continue
         if not data_rule.is_correct(query):
             message = LintMessage(rule=data_rule, line=position[0],
                                   pos=position[1], context=data_rule.context,
-                                  file=source)
+                                  file=source, resolve=("Create table", data_rule.context))
             messages.append(message)
 
     # обработка правил токенов
