@@ -1,7 +1,9 @@
+from pprint import pprint
+
 from lark import Lark, Tree
 
 from src.grammar.grammar_loader import GrammarLoader
-from src.inspector import Inspector
+from src.analysis.inspector import Inspector
 from src.rules import RuleFormatter
 
 
@@ -36,5 +38,6 @@ class SqlLinter:
         :return: код возврата
         """
         tree: Tree = self.parser.parse(self.sql)
+        print(tree.pretty())
         self.inspector.visit(tree)
         return self.print_results()

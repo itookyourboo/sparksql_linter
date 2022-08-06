@@ -1,1 +1,1 @@
-SELECT name FROM vegetables;
+SELECT name FROM vegetables

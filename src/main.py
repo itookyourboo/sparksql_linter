@@ -2,8 +2,8 @@ import sys
 import typing as tp
 
 from src.dataclasses.file_metadata import FileMetadata
-from src.inspector import Inspector
-from src.linter import SqlLinter
+from src.analysis.inspector import Inspector
+from src.analysis.linter import SqlLinter
 from src.rules import L_RULES
 
 
