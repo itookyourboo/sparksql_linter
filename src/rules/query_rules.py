@@ -35,5 +35,5 @@ class FromAfterSelect(QueryRule):
 
 def get_query_rules():
     yield from [
-        # FromAfterSelect()
+        FromAfterSelect()
     ]

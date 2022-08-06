@@ -3,11 +3,12 @@ import sqlparse
 from src.analysis.visitor import visit_query
 
 
-def main(sql):
+def main(sql, source="inline"):
     messages, position = [], (1, 1)
     queries = sqlparse.parse(sql)
     for query in queries:
-        new_messages, position = visit_query(query, position=position)
+        new_messages, position = visit_query(query, position=position,
+                                             source=source)
         messages.extend(new_messages)
     for message in messages:
         print(message)

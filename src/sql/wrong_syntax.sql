@@ -8,4 +8,4 @@ SELECT FROM b;
 
 SELECT * FROM ;
 
-SELECT field FROM `table`;
+SELECT field FROM table;
