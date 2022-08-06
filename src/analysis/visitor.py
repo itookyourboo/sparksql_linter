@@ -3,8 +3,8 @@ import sqlparse
 import sqlparse.sql as sql
 
 from models.lint_message import LintMessage
-from rules.token_rules import get_token_rules
-from rules.query_rules import get_query_rules
+from rules import token_rules
+from rules import query_rules
 
 
 def shift_position(position: tp.Tuple[int, int],
@@ -23,7 +23,7 @@ def shift_position(position: tp.Tuple[int, int],
 def visit_query(query: sql.Statement | sql.Parenthesis, position=(0, 0)) -> \
         tp.Tuple[tp.List[LintMessage], tp.Tuple[int]]:
     messages = []
-    for query_rule in get_query_rules():
+    for query_rule in query_rules:
         if not query_rule.is_suitable(query):
             continue
         if not query_rule.is_correct(query):
@@ -33,7 +33,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(0, 0)) -> \
 
     tokens: sql.TokenList = query.tokens
     for token in tokens:
-        for token_rule in get_token_rules():
+        for token_rule in token_rules:
             if not token_rule.is_suitable(token):
                 continue
             if not token_rule.is_correct(token):

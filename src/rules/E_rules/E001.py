@@ -1,7 +1,7 @@
-import sqlparse.sql as sql
+from sqlparse import sql
 from sqlparse.tokens import DML, Wildcard, Keyword
 
-from rules.abstract_rules import QueryRule
+from rules.model import QueryRule
 
 
 class FromAfterSelect(QueryRule):
@@ -29,9 +29,3 @@ class FromAfterSelect(QueryRule):
             if tokens[i].ttype is Keyword and tokens[i].value.upper() == 'FROM':
                 return has_field
         return True
-
-
-def get_query_rules():
-    yield from [
-        FromAfterSelect()
-    ]
