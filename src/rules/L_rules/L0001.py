@@ -1,5 +1,5 @@
 from lark import Tree
-from rules.rule import Rule
+from src.rules.rule import Rule
 
 
 class TableNameShouldBeInSnakeCase(Rule):

@@ -3,5 +3,10 @@ import dataclasses
 
 @dataclasses.dataclass
 class LintMessage:
-    number: int
+    """
+    Сообщение линтера
+    @:param rule_num: номер правила
+    @:param message: текст сообщения
+    """
+    rule_num: str
     message: str
