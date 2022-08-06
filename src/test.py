@@ -10,6 +10,7 @@ def f_test_all():
     ]
     for file in files:
         line = pathlib.Path(file).read_text()
+        print(file)
         main(line)
 
 
