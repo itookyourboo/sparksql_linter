@@ -10,7 +10,7 @@ from rules import query_rules
 def shift_position(position: tp.Tuple[int, int],
                    token: sql.Token) -> tp.Tuple[int, int]:
     row, col = position
-    if isinstance(token, sql.Parenthesis):
+    if isinstance(token, (sql.Parenthesis, sql.IdentifierList)):
         return row, col
     if token.ttype is sqlparse.tokens.Newline:
         print(row, col)
@@ -44,7 +44,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
                                       context=token.value, file=source)
                 messages.append(message)
         print(token.__repr__())
-        if isinstance(token, sqlparse.sql.Parenthesis):
+        if isinstance(token, (sqlparse.sql.Parenthesis, sqlparse.sql.IdentifierList)):
             new_messages, position = visit_query(token, position=position)
             messages.extend(new_messages)
         position = shift_position(position, token)
