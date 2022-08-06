@@ -89,7 +89,7 @@ def shift_position(position: tp.Tuple[int, int],
 def visit_query(query: sql.Statement | sql.Parenthesis, position=(0, 0)) -> \
 tp.Tuple[tp.List[LintMessage], tp.Tuple[int]]:
     messages = []
-    tokens = query.tokens
+    tokens: sql.TokenList = query.tokens
     for token in tokens:
         for token_rule in get_token_rules():
             if not token_rule.is_suitable(token):
@@ -99,11 +99,12 @@ tp.Tuple[tp.List[LintMessage], tp.Tuple[int]]:
                                       line=position[0], pos=position[1],
                                       context=token.value)
                 messages.append(message)
-        # print(token.__repr__())
+        #print(token.__repr__())
         if isinstance(token, sqlparse.sql.Parenthesis):
-            new_messages, position = visit_query(token)
+            new_messages, position = visit_query(token, position=position)
             messages.extend(new_messages)
         position = shift_position(position, token)
+    print(messages)
     return messages, position
 
 
@@ -111,7 +112,8 @@ def main(sql):
     messages, position = [], (0, 0)
     queries = sqlparse.parse(sql)
     for query in queries:
-        messages, position = visit_query(query)
+        new_messages, position = visit_query(query, position=position)
+        messages.extend(new_messages)
     for message in messages:
         print(message)
 
