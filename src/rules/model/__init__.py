@@ -4,7 +4,6 @@ import abc
 from sqlparse import sql
 
 
-@dataclasses.dataclass
 class Rule(abc.ABC):
     category: str = ''
     num: int = -1
@@ -31,7 +30,7 @@ class TokenRule(Rule, abc.ABC):
     """Правило для одного токена"""
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
-        token_rules.append(cls(**kwargs))
+        token_rules.append(cls())
 
 
 query_rules = []

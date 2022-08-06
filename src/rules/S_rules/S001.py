@@ -8,10 +8,6 @@ class KeyWordIsUpperCase(TokenRule):
     num = 1
     text = "Keyword should be uppercase"
 
-    def __init__(self):
-        # TODO: исправить костыль
-        pass
-
     def is_suitable(self, obj: sql.Token) -> bool:
         if not obj.is_keyword:
             return False
