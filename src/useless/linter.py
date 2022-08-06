@@ -1,9 +1,7 @@
-from pprint import pprint
-
 from lark import Lark, Tree
 
-from src.grammar.grammar_loader import GrammarLoader
-from src.analysis.inspector import Inspector
+from src.useless.grammar.grammar_loader import GrammarLoader
+from src.useless.inspector import Inspector
 from src.rules import RuleFormatter
 
 
