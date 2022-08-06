@@ -1,17 +1,15 @@
 import sqlparse.sql as sql
-import typing as tp
-
 from sqlparse.tokens import DML, Wildcard, Keyword
 
-from src.rules.abstract_rules import QueryRule
+from rules.abstract_rules import QueryRule
 
 
 class FromAfterSelect(QueryRule):
+    category = 'E'
+    num = 1
+    text = 'FROM follows immediately after SELECT'
 
     def __init__(self):
-        self.category = "E"
-        self.num = 1
-        self.text = "FROM follows immediately after SELECT"
         self.__idx = -1
 
     def is_suitable(self, obj: sql.Statement | sql.Parenthesis) -> bool:

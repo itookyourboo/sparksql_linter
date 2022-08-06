@@ -2,9 +2,9 @@ import typing as tp
 import sqlparse
 import sqlparse.sql as sql
 
-from src.models.lint_message import LintMessage
-from src.rules.token_rules import get_token_rules
-from src.rules.query_rules import get_query_rules
+from models.lint_message import LintMessage
+from rules.token_rules import get_token_rules
+from rules.query_rules import get_query_rules
 
 
 def shift_position(position: tp.Tuple[int, int],

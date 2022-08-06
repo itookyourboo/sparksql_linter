@@ -1,4 +1,4 @@
-from src.useless.rule import Rule
+from useless.rule import Rule
 
 
 class RuleFormatter:

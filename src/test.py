@@ -1,5 +1,5 @@
 import pathlib
-from src.main import main
+from runner import run
 
 
 def f_test_all():
@@ -10,8 +10,7 @@ def f_test_all():
     ]
     for file in files:
         line = pathlib.Path(file).read_text()
-        print(file)
-        main(line)
+        run(line)
 
 
 if __name__ == '__main__':

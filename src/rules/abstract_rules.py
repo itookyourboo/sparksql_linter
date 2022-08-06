@@ -4,9 +4,9 @@ import abc
 
 @dataclasses.dataclass
 class Rule(abc.ABC):
-    category: str
-    num: int
-    text: str
+    category: str = ''
+    num: int = -1
+    text: str = ''
 
     @abc.abstractmethod
     def is_suitable(self, obj) -> bool:
