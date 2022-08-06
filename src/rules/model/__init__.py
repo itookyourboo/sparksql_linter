@@ -1,6 +1,8 @@
 import dataclasses
 import abc
 
+from sqlparse import sql
+
 
 @dataclasses.dataclass
 class Rule(abc.ABC):
@@ -9,12 +11,12 @@ class Rule(abc.ABC):
     text: str = ''
 
     @abc.abstractmethod
-    def is_suitable(self, obj) -> bool:
+    def is_suitable(self, obj: sql.Statement | sql.Parenthesis) -> bool:
         """Подходит ли по шаблону"""
         raise NotImplemented
 
     @abc.abstractmethod
-    def is_correct(self, obj) -> bool:
+    def is_correct(self, obj: sql.Statement | sql.Parenthesis) -> bool:
         """Выполняется ли правило"""
         raise NotImplemented
 
@@ -22,16 +24,31 @@ class Rule(abc.ABC):
         return f"{self.category}{self.num}: {self.text}"
 
 
+token_rules = []
+
+
 class TokenRule(Rule, abc.ABC):
     """Правило для одного токена"""
-    pass
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        token_rules.append(cls(**kwargs))
+
+
+query_rules = []
 
 
 class QueryRule(Rule, abc.ABC):
     """Правило для одного запроса"""
-    pass
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        query_rules.append(cls())
+
+
+data_rules = []
 
 
 class DataRule(Rule, abc.ABC):
     """Правило по использованию данных"""
-    pass
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        data_rules.append(cls())

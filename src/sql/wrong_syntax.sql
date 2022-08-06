@@ -4,7 +4,7 @@ SELECT FROM;
 
 SELECT a FROM;
 
-SELECT FROM b;
+SELECT from b;
 
 SELECT * FROM ;
 

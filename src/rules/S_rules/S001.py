@@ -1,13 +1,16 @@
-import sqlparse.sql as sql
-import typing as tp
+from sqlparse import sql
 
-from rules.abstract_rules import TokenRule
+from rules.model import TokenRule
 
 
 class KeyWordIsUpperCase(TokenRule):
     category = "S"
     num = 1
     text = "Keyword should be uppercase"
+
+    def __init__(self):
+        # TODO: исправить костыль
+        pass
 
     def is_suitable(self, obj: sql.Token) -> bool:
         if not obj.is_keyword:
@@ -16,9 +19,3 @@ class KeyWordIsUpperCase(TokenRule):
 
     def is_correct(self, obj: sql.Token) -> bool:
         return obj.value.isupper()
-
-
-def get_token_rules() -> tp.Iterator[TokenRule]:
-    yield from [
-        KeyWordIsUpperCase()
-    ]
