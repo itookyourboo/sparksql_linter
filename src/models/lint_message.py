@@ -1,5 +1,5 @@
 import dataclasses
-from src.rules.abstract_rules import Rule
+from rules.abstract_rules import Rule
 
 
 @dataclasses.dataclass

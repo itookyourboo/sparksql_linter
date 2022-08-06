@@ -1,6 +1,6 @@
 import dataclasses
 import typing as tp
-from src.models.lint_message import LintMessage
+from models.lint_message import LintMessage
 
 
 @dataclasses.dataclass

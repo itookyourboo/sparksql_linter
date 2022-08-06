@@ -11,6 +11,6 @@ git clone https://github.com/itookyourboo/sparksql_linter.git
 
 Далее запустите утилиту командой:
 ```shell
-python ./sparksql_linter/main.py [sql files]
+python ./sparksql_linter/runner.py [sql files]
 ```
 Где `sql files` - набор файлов для синтаксического анализа
