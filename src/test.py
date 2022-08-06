@@ -1,5 +1,5 @@
 import pathlib
-from src.main import main
+from runner import run
 
 
 def f_test_all():
@@ -9,9 +9,10 @@ def f_test_all():
         "sql/wrong_syntax.sql"
     ]
     for file in files:
-        line = pathlib.Path(file).read_text()
         print(file)
         main(line, source=file)
+        line = pathlib.Path(file).read_text()
+        run(line)
 
 
 if __name__ == '__main__':

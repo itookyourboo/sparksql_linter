@@ -1,10 +1,10 @@
 import sys
 import typing as tp
 
-from src.useless.file_metadata import FileMetadata
-from src.useless.inspector import Inspector
-from src.useless.linter import SqlLinter
-from src.rules import L_RULES
+from useless.file_metadata import FileMetadata
+from useless.inspector import Inspector
+from useless.linter import SqlLinter
+from rules import L_RULES
 
 
 def get_inspector():

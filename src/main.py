@@ -1,19 +1,20 @@
-import sqlparse
-
-from src.analysis.visitor import visit_query
-
-
-def main(sql, source="inline"):
-    messages, position = [], (1, 1)
-    queries = sqlparse.parse(sql)
-    for query in queries:
-        new_messages, position = visit_query(query, position=position,
-                                             source=source)
-        messages.extend(new_messages)
-    for message in messages:
-        print(message)
-
+import sys
+from runner import run
+from pathlib import Path
 
 if __name__ == '__main__':
-    query = "select * from (select * from aboba); \n select * from aboba"
-    main(query)
+    if len(sys.argv) <= 1:
+        # print('No files to lint')
+        sys.exit(0)
+
+    files = sys.argv[1:]
+    exit_code: int = 0
+    for filename in files:
+        path = Path(filename)
+        to_run = [path] if path.is_file() else path.glob('**/*')
+        for p in to_run:
+            print(p.name)
+            sql = p.read_text()
+            exit_code |= run(sql)
+
+    sys.exit(exit_code)

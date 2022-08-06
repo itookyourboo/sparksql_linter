@@ -2,9 +2,9 @@ import typing as tp
 import sqlparse
 import sqlparse.sql as sql
 
-from src.models.lint_message import LintMessage
-from src.rules.token_rules import get_token_rules
-from src.rules.query_rules import get_query_rules
+from models.lint_message import LintMessage
+from rules import token_rules
+from rules import query_rules
 
 
 def shift_position(position: tp.Tuple[int, int],
@@ -24,7 +24,7 @@ def shift_position(position: tp.Tuple[int, int],
 def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source="inline") -> \
         tp.Tuple[tp.List[LintMessage], tp.Tuple[int]]:
     messages = []
-    for query_rule in get_query_rules():
+    for query_rule in query_rules:
         if not query_rule.is_suitable(query):
             continue
         if not query_rule.is_correct(query):
@@ -35,7 +35,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
 
     tokens: sql.TokenList = query.tokens
     for token in tokens:
-        for token_rule in get_token_rules():
+        for token_rule in token_rules:
             if not token_rule.is_suitable(token):
                 continue
             if not token_rule.is_correct(token):

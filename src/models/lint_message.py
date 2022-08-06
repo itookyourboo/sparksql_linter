@@ -1,5 +1,5 @@
 import dataclasses
-from src.rules.abstract_rules import Rule
+from rules.model import Rule
 
 
 @dataclasses.dataclass
@@ -22,5 +22,5 @@ class LintMessage:
     def __str__(self):
         return (
             f'{self.file}\n{self.line}:{self.pos:<4}| {self.rule.category}'
-            f'{self.rule.num:03}: {self.rule.text} [{self.context}]'
+            f'{self.rule.num:03}: {self.rule.text} [{self.context.strip()}]'
         )
