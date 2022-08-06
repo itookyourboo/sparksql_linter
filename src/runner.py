@@ -12,8 +12,8 @@ def run(sql, source="inline") -> bool:
     messages, position = [], (1, 1)
     queries = sqlparse.parse(sql)
     for query in queries:
-        new_messages, position = visit_query(query, position=position,
-                                             source=source)
+        new_messages, position, tables = visit_query(query, position=position,
+                                                     source=source)
         messages.extend(new_messages)
     for message in messages:
         print(message)

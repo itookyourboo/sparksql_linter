@@ -5,6 +5,10 @@ import sqlparse.sql as sql
 from models.lint_message import LintMessage
 from rules import token_rules
 from rules import query_rules
+from rules import data_rules
+from analysis.data_parser import is_ddl, parse_table, filter_not_whitespace
+from models.table import Table
+from rules.D_rules.D001 import TableDoesNotExists
 
 
 def shift_position(position: tp.Tuple[int, int],
@@ -22,8 +26,12 @@ def shift_position(position: tp.Tuple[int, int],
 
 
 def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source="inline") -> \
-        tp.Tuple[tp.List[LintMessage], tp.Tuple[int]]:
-    messages = []
+        tp.Tuple[tp.List[LintMessage], tp.Tuple[int], tp.List[Table]]:
+    messages, tables = [], []
+    if is_ddl(query):
+        table = parse_table(query)
+        tables.append(table)
+    # обработка правил запросов
     for query_rule in query_rules:
         if not query_rule.is_suitable(query):
             continue
@@ -34,6 +42,18 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
                                   file=source, resolve=correction)
             messages.append(message)
 
+    # обработка правил данных
+    for data_rule in [TableDoesNotExists()]:
+        data_rule = data_rule.__class__(tables)
+        if not data_rule.is_suitable(query):
+            continue
+        if not data_rule.is_correct(query):
+            message = LintMessage(rule=data_rule, line=position[0],
+                                  pos=position[1], context=data_rule.context,
+                                  file=source, resolve=("Create table", data_rule.context))
+            messages.append(message)
+
+    # обработка правил токенов
     tokens: sql.TokenList = query.tokens
     for token in tokens:
         for token_rule in token_rules:
@@ -47,8 +67,10 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
                 messages.append(message)
         # print(token.__repr__())
         if isinstance(token, (sqlparse.sql.Parenthesis, sqlparse.sql.IdentifierList)):
-            new_messages, position = visit_query(token, position=position, source=source)
+            new_messages, position, new_tables \
+                = visit_query(token, position=position)
             messages.extend(new_messages)
+            tables.extend(new_tables)
         position = shift_position(position, token)
     # print(messages)
-    return messages, position
+    return messages, position, tables
