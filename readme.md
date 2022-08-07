@@ -9,8 +9,20 @@
 git clone https://github.com/itookyourboo/sparksql_linter.git
 ```
 
+Внимание! Требуется Python 3.10.
+
+Установите необходимые зависимости:
+```shell
+pip install -r requirements.txt
+```
+
 Далее запустите утилиту командой:
 ```shell
-python ./sparksql_linter/runner.py [sql files]
+python ./sparksql_linter/main.py [file1[, file2, [file3]]]
 ```
-Где `sql files` - набор файлов для синтаксического анализа
+Где `sql files` - набор файлов для синтаксического анализа.
+
+Например:
+```shell
+python ./sparksql_linter/main.py sql_folder/ test_file.sql
+```
