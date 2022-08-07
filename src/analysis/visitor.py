@@ -6,9 +6,8 @@ from models.lint_message import LintMessage
 from rules import token_rules
 from rules import query_rules
 from rules import data_rules
-from analysis.data_parser import is_ddl, parse_table, filter_not_whitespace
+from analysis.data_parser import is_ddl, parse_table
 from models.table import Table
-from rules.D_rules.D001 import TableDoesNotExists
 
 
 def shift_position(position: tp.Tuple[int, int],
