@@ -68,7 +68,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
         # print(token.__repr__())
         if isinstance(token, (sqlparse.sql.Parenthesis, sqlparse.sql.IdentifierList)):
             new_messages, position, new_tables \
-                = visit_query(token, position=position)
+                = visit_query(token, position=position, source=source)
             messages.extend(new_messages)
             tables.extend(new_tables)
         position = shift_position(position, token)
