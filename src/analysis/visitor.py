@@ -25,9 +25,10 @@ def shift_position(position: tp.Tuple[int, int],
     return row, col
 
 
-def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source="inline") -> \
+def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1),
+                source="inline", tables=()) -> \
         tp.Tuple[tp.List[LintMessage], tp.Tuple[int], tp.List[Table]]:
-    messages, tables = [], []
+    messages = []
     if is_ddl(query):
         table = parse_table(query)
         tables.append(table)
@@ -44,6 +45,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
 
     # обработка правил данных
     for data_rule in [TableDoesNotExists()]:
+        print(tables)
         data_rule = data_rule.__class__(tables)
         if not data_rule.is_suitable(query):
             continue
@@ -68,7 +70,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
         # print(token.__repr__())
         if isinstance(token, (sqlparse.sql.Parenthesis, sqlparse.sql.IdentifierList)):
             new_messages, position, new_tables \
-                = visit_query(token, position=position, source=source)
+                = visit_query(token, position=position, source=source, tables=tables)
             messages.extend(new_messages)
             tables.extend(new_tables)
         position = shift_position(position, token)

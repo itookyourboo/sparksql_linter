@@ -9,11 +9,11 @@ def run(sql, source="inline") -> bool:
     :param source: название файла (или inline)
     :return: 0, если сообщений нет, иначе 1
     """
-    messages, position = [], (1, 1)
+    messages, position, tables = [], (1, 1), []
     queries = sqlparse.parse(sql)
     for query in queries:
         new_messages, position, tables = visit_query(query, position=position,
-                                                     source=source)
+                                                     source=source, tables=tables)
         messages.extend(new_messages)
     for message in messages:
         print(message)
