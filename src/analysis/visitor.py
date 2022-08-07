@@ -45,7 +45,6 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1),
 
     # обработка правил данных
     for data_rule in [TableDoesNotExists()]:
-        print(tables)
         data_rule = data_rule.__class__(tables)
         if not data_rule.is_suitable(query):
             continue
