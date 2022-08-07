@@ -7,6 +7,7 @@
 Для запуска склонируйте репозиторий
 ```shell
 git clone https://github.com/itookyourboo/sparksql_linter.git
+cd sparksql_linter
 ```
 
 Внимание! Требуется Python 3.10.
@@ -18,11 +19,11 @@ pip install -r requirements.txt
 
 Далее запустите утилиту командой:
 ```shell
-python ./sparksql_linter/main.py [file1[, file2, [file3]]]
+python ./src/main.py [file1[, file2, [file3]]]
 ```
 Где `sql files` - набор файлов для синтаксического анализа.
 
 Например:
 ```shell
-python ./sparksql_linter/main.py sql_folder/ test_file.sql
+python ./src/main.py sql_folder/ test_file.sql
 ```
