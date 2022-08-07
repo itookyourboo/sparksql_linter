@@ -9,7 +9,7 @@ def f_test_all():
         "sql/wrong_syntax.sql"
     ]
     for file in files:
-        print(file)
+        # print(file)
         line = pathlib.Path(file).read_text()
         run(line, source=file)
 
