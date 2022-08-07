@@ -18,12 +18,10 @@ def is_ddl(query: sql.Statement):
 
 def parse_table(query: sql.Statement):
     tokens: tp.List[sql.Token] = filter_not_whitespace(query.tokens)
-    table = Table()
+    table = Table(name=tokens[2].value)
     column = Column(name="")
     for token in tokens:
-        if token.ttype == sqlparse.sql.Identifier:
-            table.name = token.value
-        elif isinstance(token, sqlparse.sql.Parenthesis):
+        if isinstance(token, sqlparse.sql.Parenthesis):
             col_tokens = filter_not_whitespace(token.flatten())
             for col_token in col_tokens:
                 if col_token.value.upper() == "VARCHAR":

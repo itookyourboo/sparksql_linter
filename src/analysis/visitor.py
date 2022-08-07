@@ -6,9 +6,8 @@ from models.lint_message import LintMessage
 from rules import token_rules
 from rules import query_rules
 from rules import data_rules
-from analysis.data_parser import is_ddl, parse_table, filter_not_whitespace
+from analysis.data_parser import is_ddl, parse_table
 from models.table import Table
-from rules.D_rules.D001 import TableDoesNotExists
 
 
 def shift_position(position: tp.Tuple[int, int],
@@ -25,9 +24,10 @@ def shift_position(position: tp.Tuple[int, int],
     return row, col
 
 
-def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source="inline") -> \
+def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1),
+                source="inline", tables=()) -> \
         tp.Tuple[tp.List[LintMessage], tp.Tuple[int], tp.List[Table]]:
-    messages, tables = [], []
+    messages = []
     if is_ddl(query):
         table = parse_table(query)
         tables.append(table)
@@ -43,7 +43,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
             messages.append(message)
 
     # обработка правил данных
-    for data_rule in [TableDoesNotExists()]:
+    for data_rule in data_rules:
         data_rule = data_rule.__class__(tables)
         if not data_rule.is_suitable(query):
             continue
@@ -68,7 +68,7 @@ def visit_query(query: sql.Statement | sql.Parenthesis, position=(1, 1), source=
         # print(token.__repr__())
         if isinstance(token, (sqlparse.sql.Parenthesis, sqlparse.sql.IdentifierList)):
             new_messages, position, new_tables \
-                = visit_query(token, position=position, source=source)
+                = visit_query(token, position=position, source=source, tables=tables)
             messages.extend(new_messages)
             tables.extend(new_tables)
         position = shift_position(position, token)

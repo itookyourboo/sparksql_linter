@@ -19,7 +19,7 @@ class LintMessage:
     pos: int
     context: str
     file: str
-    resolve: str
+    resolve: tuple[str, str]
 
     def __str__(self):
         file_info = f'{self.file}:{self.line}:{self.pos}'
